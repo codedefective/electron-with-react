@@ -1,7 +1,7 @@
 const electron = require("electron");
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
-
+const { exec } = require('child_process');
 const path = require("path");
 const isDev = require("electron-is-dev");
 
@@ -28,6 +28,13 @@ app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
     app.quit();
   }
+});
+
+app.on('before-quit', () => {
+  console.log('killing 1');
+});
+process.on('exit', function() {
+  exec('taskkill -F -IM node.exe');
 });
 
 app.on("activate", () => {
